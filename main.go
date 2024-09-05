@@ -37,7 +37,7 @@ func main() {
 	}
 
 	if yearNamedPath != "" {
-		slog.Info("Parsing years folder")
+		slog.Debug("Parsing years folder")
 
 		files, err := os.ReadDir(yearNamedPath)
 		if err != nil {
@@ -51,11 +51,13 @@ func main() {
 			}
 
 			name := file.Name()
+			slog.Debug("Processing Year Folder", "folder", name)
 
 			yearParts := yearRegex.FindAllString(name, 1)
 			if len(yearParts) == 1 {
 				year := yearParts[0]
 				name = strings.Replace(name, year, "", -1)
+				name = strings.TrimSpace(name) // Clean up whitespace
 				yearPathNames[name] = year
 				slog.Debug("Add year", "folder", name, "year", year)
 			} else {
